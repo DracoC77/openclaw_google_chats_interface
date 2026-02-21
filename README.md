@@ -33,14 +33,23 @@ call the sidecar.
 **Adaptive polling**: Polls every 30s when you're actively chatting with the
 agent, decays to every 4h when idle.
 
-## Quick Start
+## Docker Image
+
+Pre-built images are published to GitHub Container Registry on every push to
+`main` and on version tags. Multi-arch (`amd64` + `arm64`).
+
+```
+ghcr.io/dracoc77/openclaw-google-chat-sidecar:latest
+```
+
+## Quick Start (Docker Compose)
 
 ```bash
 # 1. Configure
 cp .env.example .env
 # Edit .env with your Google OAuth credentials and space ID
 
-# 2. Start the sidecar
+# 2. Start the sidecar (pulls pre-built image)
 docker compose up -d
 
 # 3. Complete OAuth (one-time)
@@ -50,6 +59,25 @@ curl http://localhost:3100/auth/url
 # 4. Install the skill into OpenClaw
 cp -r skill/ /path/to/openclaw/extensions/google-chat/
 ```
+
+## Unraid
+
+An Unraid template is included at `unraid/openclaw-google-chat-sidecar.xml`.
+
+**To install:**
+1. Copy the XML to your Unraid flash drive:
+   ```
+   /boot/config/plugins/dockerMan/templates-user/openclaw-google-chat-sidecar.xml
+   ```
+2. In the Unraid web UI go to **Docker → Add Container → Template** and select
+   **openclaw-google-chat-sidecar**
+3. Fill in your Google Client ID, Client Secret, and Space ID
+4. Set the OAuth Redirect URI to `http://<YOUR_UNRAID_IP>:3100/auth/callback`
+5. Click **Apply**
+6. Once running, visit `http://<YOUR_UNRAID_IP>:3100/auth/url` to complete
+   the one-time OAuth consent
+
+Data (SQLite DB + OAuth tokens) persists in `/mnt/user/appdata/openclaw-google-chat`.
 
 See [setup-guide.md](setup-guide.md) for detailed instructions including GCP
 project setup.
