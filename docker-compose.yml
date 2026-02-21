@@ -1,0 +1,31 @@
+services:
+  google-chat-sidecar:
+    # Use the pre-built image from GHCR, or build locally with:
+    #   docker compose build
+    image: ghcr.io/dracoc77/openclaw-google-chat-sidecar:latest
+    build: ./sidecar
+    container_name: google-chat-sidecar
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3100:3100"
+    volumes:
+      - google-chat-data:/data
+    env_file:
+      - .env
+    environment:
+      - DB_PATH=/data/google_chat.db
+
+  # To integrate with an existing OpenClaw docker-compose, either:
+  #   1. Add this service block to your OpenClaw docker-compose.yml, or
+  #   2. Use an external Docker network shared between the two compose files:
+  #
+  #   networks:
+  #     default:
+  #       name: openclaw-network
+  #       external: true
+  #
+  # Then the OpenClaw skill can reach the sidecar at:
+  #   http://google-chat-sidecar:3100
+
+volumes:
+  google-chat-data:
