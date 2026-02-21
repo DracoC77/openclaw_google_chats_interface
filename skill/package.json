@@ -1,0 +1,14 @@
+{
+  "name": "@openclaw-extensions/google-chat",
+  "version": "0.1.0",
+  "description": "OpenClaw skill for interacting with Google Chat via the sidecar service",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^5.4"
+  }
+}
